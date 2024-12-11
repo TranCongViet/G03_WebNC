@@ -8,24 +8,25 @@ export function SearchPage() {
     const [searchParams] = useSearchParams();
     const [movies, setMovies] = useState([]);
     const [maxPage, setMaxPage] = useState(1);
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         const getSearchResult = async () => {
-            const page = searchParams.get("page") || "1";
+            const pageParam = searchParams.get("page") || "1";
             const query = searchParams.get("query");
 
-            if (query) {
+            let page = parseInt(pageParam, 10);
+
+            if (query && isNaN(page) === false && page > 0 && page <= maxPage) {
                 setLoading(true);
                 const data = await TMDP_API.searchMovies(query, page);
                 if (data && data.results) {
                     setMovies(data.results);
-                    setMaxPage(data.total_pages);
+                    setMaxPage(data?.total_pages);
                 }
                 setLoading(false);
             }
         };
-
         getSearchResult();
     }, [searchParams]);
     return (
@@ -38,7 +39,7 @@ export function SearchPage() {
                 loading ? (<SkeletonMovieResultCard></SkeletonMovieResultCard>
                 ) :
                     <div className="space-y-4">
-                        {movies.length === 0 || +searchParams.get("page") > maxPage ? (
+                        {movies.length === 0 || +searchParams.get("page") > maxPage || +searchParams.get("page") < 1 ? (
                             <div className="text-center">
                                 Không tìm thấy kết quả nào.
                             </div>

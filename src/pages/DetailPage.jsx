@@ -5,7 +5,7 @@ import { TMDP_API } from '../utils/TMDP_API';
 export function DetailPage() {
     const { id } = useParams();
     const [detail, setDetail] = useState(null);
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         const fetchMovieDetails = async (id) => {

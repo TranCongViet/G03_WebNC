@@ -8,7 +8,7 @@ import { MoviesCard } from "../components/MoviesCard";
 export function HomePage() {
     const [movies, setMovies] = useState([]);
     const [active, setActive] = useState("day");
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         const fetchTrendingMovies = async (active) => {
